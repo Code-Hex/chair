@@ -94,6 +94,8 @@ func NginxOutsideMaybeNiceConfig() string {
 
 func NginxStaticLocationConfig() string {
 	return `location / {
+	gzip_static always;
+	gunzip on;
 	open_file_cache max=100 inactive=20s;
 	expires 1d;
 }`
