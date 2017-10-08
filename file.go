@@ -1,8 +1,18 @@
 package main
 
+import (
+	"os"
+	"path/filepath"
+
+	"github.com/mholt/archiver"
+)
+
+const bin = "/usr/bin"
+
 type file interface {
 	Name() string
 	URL() string
+	Callback() error
 }
 
 type alp struct {
@@ -21,6 +31,21 @@ func alpNew() file {
 }
 func (a *alp) Name() string { return a.name }
 func (a *alp) URL() string  { return a.url }
+func (a *alp) Callback() error {
+	if err := archiver.Zip.Open(a.name, "alp"); err != nil {
+		return err
+	}
+	if err := os.Rename("alp/alp", filepath.Join(bin, "alp")); err != nil {
+		return err
+	}
+	if err := os.Remove(a.name); err != nil {
+		return err
+	}
+	if err := os.RemoveAll("alp"); err != nil {
+		return err
+	}
+	return nil
+}
 
 func ptQueryDigestNew() file {
 	return &ptQueryDigest{
@@ -31,3 +56,9 @@ func ptQueryDigestNew() file {
 
 func (p *ptQueryDigest) Name() string { return p.name }
 func (p *ptQueryDigest) URL() string  { return p.url }
+func (p *ptQueryDigest) Callback() error {
+	if err := os.Rename(p.name, filepath.Join(bin, p.name)); err != nil {
+		return err
+	}
+	return nil
+}

@@ -87,9 +87,8 @@ func NginxEventConfig() string {
 }
 
 func NginxOutsideMaybeNiceConfig() string {
-	return `
-	worker_processes  1;
-	worker_rlimit_nofile 10000;`
+	return `worker_processes  1;
+worker_rlimit_nofile 10000;`
 }
 
 func NginxStaticLocationConfig() string {

@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"sync"
@@ -105,9 +106,12 @@ func (c *Chair) run() error {
 			go func(fi file) {
 				defer wg.Done()
 				if err := download(fi); err != nil {
-					panic(err)
+					log.Println(err)
 				}
 				fmt.Println("Done:", fi.URL())
+				if err := fi.Callback(); err != nil {
+					log.Println(err)
+				}
 			}(v)
 		}
 		wg.Wait()
