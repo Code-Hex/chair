@@ -4,3 +4,4 @@
 !LICENSE
 !.gitignore
 !.travis.yml
+.DS_Store
