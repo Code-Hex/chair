@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Code-Hex/chair/show/config"
+	"github.com/Code-Hex/chair/internal/show/config"
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 )

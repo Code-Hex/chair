@@ -10,7 +10,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/Code-Hex/chair/setup/generate"
+	"github.com/Code-Hex/chair/internal/setup/generate"
 	"github.com/pkg/errors"
 )
 

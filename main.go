@@ -4,15 +4,12 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/Code-Hex/chair/info"
+	"github.com/Code-Hex/chair/internal/dump"
+	"github.com/Code-Hex/chair/internal/info"
+	"github.com/Code-Hex/chair/internal/setup"
+	"github.com/Code-Hex/chair/internal/show"
+	"github.com/Code-Hex/chair/internal/tldr"
 
-	"github.com/Code-Hex/chair/dump"
-
-	"github.com/Code-Hex/chair/tldr"
-
-	"github.com/Code-Hex/chair/show"
-
-	"github.com/Code-Hex/chair/setup"
 	"github.com/spf13/cobra"
 )
 
