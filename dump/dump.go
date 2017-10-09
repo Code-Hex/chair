@@ -52,6 +52,11 @@ query_cache_size = 1024M
 query_cache_type = 1`
 }
 
+func SQLFix57GroupByProblem() string {
+	return `[mysqld]
+sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES`
+}
+
 func NginxAccessLogConfig() string {
 	return `http {
 	log_format ltsv 'domain:$host\t'

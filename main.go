@@ -52,35 +52,35 @@ func (c *Chair) run() error {
 	}
 
 	if c.Dump != "" {
-		var dumpStr string
 		switch c.Dump {
 		// MySQL
 		case "sql-default":
-			dumpStr = dump.SQLDefaultConfig()
+			fmt.Println(dump.SQLDefaultConfig())
 		case "sql-slow-log":
-			dumpStr = dump.SQLSlowLogConfig()
+			fmt.Println(dump.SQLSlowLogConfig())
 		case "sql-maybe-nice":
-			var err error
-			dumpStr, err = dump.SQLMaybeNiceConfig()
+			dumpStr, err := dump.SQLMaybeNiceConfig()
 			if err != nil {
 				return errors.Wrap(err, "Failed to get memory size")
 			}
+			fmt.Println(dumpStr)
 		case "sql-cache":
-			dumpStr = dump.SQLCacheConfig()
+			fmt.Println(dump.SQLCacheConfig())
+		case "sql-fix57-groupby":
+			fmt.Println(dump.SQLFix57GroupByProblem())
 		// Nginx
 		case "nginx-access-log":
-			dumpStr = dump.NginxAccessLogConfig()
+			fmt.Println(dump.NginxAccessLogConfig())
 		case "nginx-event":
-			dumpStr = dump.NginxEventConfig()
+			fmt.Println(dump.NginxEventConfig())
 		case "nginx-outside-maybe-nice":
-			dumpStr = dump.NginxOutsideMaybeNiceConfig()
+			fmt.Println(dump.NginxOutsideMaybeNiceConfig())
 		case "nginx-static":
-			dumpStr = dump.NginxStaticLocationConfig()
+			fmt.Println(dump.NginxStaticLocationConfig())
 		default:
 			os.Stderr.Write(c.usage())
 			return nil
 		}
-		fmt.Println(dumpStr)
 		return nil
 	}
 

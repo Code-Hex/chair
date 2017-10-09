@@ -19,7 +19,7 @@ type Options struct {
 	Version bool   `short:"v" long:"version" description:"print the version"`
 	Init    bool   `short:"i" long:"init" description:"initialize"`
 
-	Dump       string `short:"d" long:"dump" description:"args: sql-(default|slow-log|maybe-nice|cache), nginx-(access-log|event|outside-maybe-nice|static)"`
+	Dump       string `short:"d" long:"dump" description:"args: sql-(default|slow-log|maybe-nice|cache|fix57-groupby), nginx-(access-log|event|outside-maybe-nice|static)"`
 	StackTrace bool   `long:"trace" description:"display detail error messages"`
 }
 
