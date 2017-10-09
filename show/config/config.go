@@ -1,4 +1,4 @@
-package dump
+package config
 
 import (
 	"fmt"
@@ -6,14 +6,14 @@ import (
 	"github.com/shirou/gopsutil/mem"
 )
 
-func SQLSlowLogConfig() string {
+func SQLSlowLog() string {
 	return `[mysqld]
 slow_query_log = 1
 slow_query_log_file = /var/log/mysql/mysqld-slow.log
 long_query_time = 0`
 }
 
-func SQLDefaultConfig() string {
+func SQLDefault() string {
 	return `[mysqld]
 datadir = /var/lib/mysql
 socket = /var/lib/mysql/mysql.sock
@@ -26,7 +26,7 @@ log-error = /var/log/mysql/mysqld.log
 pid-file = /var/run/mysqld/mysqld.pid`
 }
 
-func SQLMaybeNiceConfig() (string, error) {
+func SQLMaybeNice() (string, error) {
 	v, err := mem.VirtualMemory()
 	if err != nil {
 		return "", err
@@ -39,7 +39,7 @@ innodb_flush_log_at_trx_commit = 2
 innodb_flush_method = O_DIRECT`, PerGB), nil
 }
 
-func SQLCacheConfig() string {
+func SQLCache() string {
 	return `[mysqld]
 query_cache_limit = 128M
 
@@ -57,7 +57,7 @@ func SQLFix57GroupByProblem() string {
 sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES`
 }
 
-func NginxAccessLogConfig() string {
+func NginxAccessLog() string {
 	return `http {
 	log_format ltsv 'domain:$host\t'
 		'host:$remote_addr\t'
@@ -82,7 +82,7 @@ func NginxAccessLogConfig() string {
 }`
 }
 
-func NginxEventConfig() string {
+func NginxEvent() string {
 	return `events {
 	worker_connections  1024;
 	# accept_mutex_delay 100ms;
@@ -91,12 +91,12 @@ func NginxEventConfig() string {
 }`
 }
 
-func NginxOutsideMaybeNiceConfig() string {
+func NginxOutsideMaybeNice() string {
 	return `worker_processes  1;
 worker_rlimit_nofile 10000;`
 }
 
-func NginxStaticLocationConfig() string {
+func NginxStaticLocation() string {
 	return `location / {
 	gzip_static always;
 	gunzip on;

@@ -1,4 +1,4 @@
-package main
+package setup
 
 import (
 	"fmt"
@@ -8,22 +8,38 @@ import (
 	"os"
 	"sync"
 
-	"github.com/Code-Hex/chair/gen"
+	"github.com/spf13/cobra"
+
+	"github.com/Code-Hex/chair/setup/generate"
 	"github.com/pkg/errors"
 )
 
-func runInit() error {
+const (
+	indent             = "    "
+	perm   os.FileMode = 0755
+)
+
+func CommandNew() *cobra.Command {
+	return &cobra.Command{
+		Use:   "setup",
+		Short: "Run initial setup for isucon environment",
+		Long: `Run initial setup for isucon environment.
+
+What will install? => alp v0.3.1, pt-query-digest
+What will generate script? => "restart.sh" into current directory
+Where will install path? => ` + bin,
+		Example: indent + "sudo chair setup",
+		RunE:    run,
+	}
+}
+
+func run(cmd *cobra.Command, args []string) error {
 	if os.Geteuid() > 0 {
 		return errors.New("If you want to initialize, you should run as a superuser")
 	}
-	restartScript := gen.GenerateRestartScript()
-	f, err := os.Create("restart.sh")
-	if err != nil {
-		return errors.Wrap(err, "Failed to create restart.sh")
+	if err := generate.RestartScript(); err != nil {
+		return errors.Wrap(err, "Failed to create restart script")
 	}
-	f.WriteString(restartScript)
-	f.Chmod(perm)
-	f.Close()
 
 	files := []file{
 		alpNew(),

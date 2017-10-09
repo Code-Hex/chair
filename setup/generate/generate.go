@@ -1,7 +1,15 @@
-package gen
+package generate
 
-func GenerateRestartScript() string {
-	return `#!/bin/bash
+import (
+	"os"
+
+	"github.com/pkg/errors"
+)
+
+const perm os.FileMode = 0755
+
+func RestartScript() error {
+	script := `#!/bin/bash
 set -ex
 
 if [ -f /var/log/mysql/mysqld-slow.log ]; then
@@ -12,4 +20,14 @@ if [ -f /var/log/nginx/access.log ]; then
 fi
 sudo systemctl restart mysql
 sudo systemctl restart nginx`
+
+	f, err := os.Create("restart.sh")
+	if err != nil {
+		return errors.Wrap(err, "Failed to create file")
+	}
+	f.WriteString(script)
+	f.Chmod(perm)
+	f.Close()
+
+	return nil
 }
