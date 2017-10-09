@@ -2,14 +2,8 @@ package main
 
 import (
 	"fmt"
-	"io"
-	"log"
-	"net/http"
 	"os"
-	"sync"
 
-	"github.com/Code-Hex/chair/dump"
-	"github.com/Code-Hex/chair/gen"
 	"github.com/Code-Hex/exit"
 	"github.com/pkg/errors"
 )
@@ -19,6 +13,8 @@ const (
 	name    = "chair"
 	msg     = name + " is initial setup tool for isucon"
 )
+
+var perm os.FileMode = 0755
 
 type Chair struct {
 	Options
@@ -43,105 +39,19 @@ func (c *Chair) Run() int {
 }
 
 func (c *Chair) run() error {
-	if os.Geteuid() > 0 {
-		return errors.New("You must run this program as a superuser")
-	}
 	_, err := c.prepare()
 	if err != nil {
 		return err
 	}
-
-	if c.Dump != "" {
-		switch c.Dump {
-		// MySQL
-		case "sql-default":
-			fmt.Println(dump.SQLDefaultConfig())
-		case "sql-slow-log":
-			fmt.Println(dump.SQLSlowLogConfig())
-		case "sql-maybe-nice":
-			dumpStr, err := dump.SQLMaybeNiceConfig()
-			if err != nil {
-				return errors.Wrap(err, "Failed to get memory size")
-			}
-			fmt.Println(dumpStr)
-		case "sql-cache":
-			fmt.Println(dump.SQLCacheConfig())
-		case "sql-fix57-groupby":
-			fmt.Println(dump.SQLFix57GroupByProblem())
-		// Nginx
-		case "nginx-access-log":
-			fmt.Println(dump.NginxAccessLogConfig())
-		case "nginx-event":
-			fmt.Println(dump.NginxEventConfig())
-		case "nginx-outside-maybe-nice":
-			fmt.Println(dump.NginxOutsideMaybeNiceConfig())
-		case "nginx-static":
-			fmt.Println(dump.NginxStaticLocationConfig())
-		default:
-			os.Stderr.Write(c.usage())
-			return nil
-		}
-		return nil
+	// Options
+	if c.Show != "" {
+		return c.runShow()
 	}
-
 	if c.Init {
-		restartScript := gen.GenerateRestartScript()
-		f, err := os.Create("restart.sh")
-		if err != nil {
-			return errors.Wrap(err, "Failed to create restart.sh")
-		}
-		f.WriteString(restartScript)
-		f.Chmod(0755)
-		f.Close()
-
-		files := []file{
-			alpNew(),
-			ptQueryDigestNew(),
-		}
-
-		var wg sync.WaitGroup
-		for _, v := range files {
-			fmt.Println("Start:", v.URL())
-			wg.Add(1)
-			go func(fi file) {
-				defer wg.Done()
-				if err := download(fi); err != nil {
-					log.Println(err)
-				}
-				fmt.Println("Done:", fi.URL())
-				if err := fi.Callback(); err != nil {
-					log.Println(err)
-				}
-			}(v)
-		}
-		wg.Wait()
-		return nil
+		return runInit()
 	}
 
 	os.Stderr.Write(c.usage())
-	return nil
-}
-
-func download(file file) error {
-	req, err := http.NewRequest("GET", file.URL(), nil)
-	if err != nil {
-		return errors.Wrap(err, "Failed to make request")
-	}
-
-	resp, err := http.DefaultClient.Do(req)
-	if err != nil {
-		return errors.Wrapf(err, "Failed to download: %s", file.URL())
-	}
-	defer resp.Body.Close()
-
-	f, err := os.Create(file.Name())
-	if err != nil {
-		return errors.Wrapf(err, "Failed to create %s", file.Name())
-	}
-	io.Copy(f, resp.Body)
-	f.Chmod(0755)
-	f.Close()
-
 	return nil
 }
 
