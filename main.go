@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/Code-Hex/chair/dump"
+
 	"github.com/Code-Hex/chair/tldr"
 
 	"github.com/Code-Hex/chair/show"
@@ -37,6 +39,7 @@ func New() *Chair {
 		setup.CommandNew(),
 		show.CommandNew(),
 		tldr.CommandNew(),
+		dump.CommandNew(),
 	)
 
 	chair.command.Flags().Bool("version", true, "show version")
