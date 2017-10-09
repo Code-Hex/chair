@@ -16,6 +16,7 @@ type file interface {
 }
 
 type alp struct {
+	filename  string
 	name, url string
 }
 
@@ -32,16 +33,20 @@ func alpNew() file {
 func (a *alp) Name() string { return a.name }
 func (a *alp) URL() string  { return a.url }
 func (a *alp) Callback() error {
-	if err := archiver.Zip.Open(a.name, "alp"); err != nil {
+	if err := archiver.Zip.Open(a.name, a.filename); err != nil {
 		return err
 	}
-	if err := os.Rename("alp/alp", filepath.Join(bin, "alp")); err != nil {
+	dirname := a.filename
+	if err := os.Rename(
+		filepath.Join(dirname, a.filename),
+		filepath.Join(bin, a.filename),
+	); err != nil {
 		return err
 	}
 	if err := os.Remove(a.name); err != nil {
 		return err
 	}
-	if err := os.RemoveAll("alp"); err != nil {
+	if err := os.RemoveAll(a.filename); err != nil {
 		return err
 	}
 	return nil
