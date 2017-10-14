@@ -1,4 +1,4 @@
-package main
+package chair
 
 import (
 	"fmt"
@@ -9,7 +9,6 @@ import (
 	"github.com/Code-Hex/chair/internal/setup"
 	"github.com/Code-Hex/chair/internal/show"
 	"github.com/Code-Hex/chair/internal/tldr"
-
 	"github.com/spf13/cobra"
 )
 
@@ -21,20 +20,25 @@ const (
 
 type Chair struct {
 	StackTrace bool
-	command    *cobra.Command
+	Command    *cobra.Command
 }
 
 func New() *Chair {
 	chair := new(Chair)
-	chair.command = &cobra.Command{
+	chair.Command = NewCommand()
+	return chair
+}
+
+func NewCommand() *cobra.Command {
+	c := &cobra.Command{
 		Use:           name,
 		Short:         msg,
 		Long:          msg,
-		RunE:          chair.run,
+		RunE:          run(),
 		SilenceErrors: true,
 	}
 
-	chair.command.AddCommand(
+	c.AddCommand(
 		setup.CommandNew(),
 		show.CommandNew(),
 		tldr.CommandNew(),
@@ -42,18 +46,13 @@ func New() *Chair {
 		info.CommandNew(),
 	)
 
-	chair.command.Flags().Bool("version", true, "show version")
-
-	return chair
-}
-
-func main() {
-	os.Exit(New().Run())
+	c.Flags().Bool("version", true, "show version")
+	return c
 }
 
 // Run command line
 func (c *Chair) Run() int {
-	if e := c.command.Execute(); e != nil {
+	if e := c.Command.Execute(); e != nil {
 		exitCode, err := UnwrapErrors(e)
 		if c.StackTrace {
 			fmt.Fprintf(os.Stderr, "Error:\n  %+v\n", e)
@@ -65,6 +64,8 @@ func (c *Chair) Run() int {
 	return 0
 }
 
-func (c *Chair) run(cmd *cobra.Command, args []string) error {
-	return cmd.Usage()
+func run() func(*cobra.Command, []string) error {
+	return func(cmd *cobra.Command, args []string) error {
+		return cmd.Usage()
+	}
 }

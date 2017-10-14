@@ -31,6 +31,17 @@ func CommandNew() *cobra.Command {
 			"chair show nginx-(access-log|event|outside-maybe-nice|static)",
 		),
 		RunE: run,
+		ValidArgs: []string{
+			"sql-default",
+			"sql-slow-log",
+			"sql-maybe-nice",
+			"sql-cache",
+			"sql-fix57-groupby",
+			"nginx-access-log",
+			"nginx-event",
+			"nginx-outside-maybe-nice",
+			"nginx-static",
+		},
 	}
 }
 

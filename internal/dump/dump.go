@@ -37,6 +37,11 @@ func CommandNew() *cobra.Command {
 			"chair dump [flags] data",
 		),
 		RunE: d.run,
+		ValidArgs: []string{
+			"all",
+			"schema",
+			"data",
+		},
 	}
 
 	cmd.Flags().IntVarP(&d.port, "port", "P", 3306, "specify mysql port number")

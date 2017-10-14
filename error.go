@@ -1,4 +1,4 @@
-package main
+package chair
 
 type causer interface {
 	Cause() error
