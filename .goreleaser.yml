@@ -11,4 +11,6 @@ archive:
   replacements:
     amd64: 64-bit
   files:
+    - README.md
+    - LICENSE
     - chair.bash
