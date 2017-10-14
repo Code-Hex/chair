@@ -1,9 +1,9 @@
 <p align="center">
   <img alt="logo" src="https://user-images.githubusercontent.com/6500104/31577054-c9f68064-b142-11e7-9e5a-e41046f330f7.png" height="140" />
   <h3 align="center">Chair</h3>
-  <p align="center">This chair help you when you play isucon.</p>
+  <p align="center">This chair help you when you play [isucon](http://isucon.net/).</p>
   <p align="center">
-    <a href="/LICENSE.md"><img alt="Software License" src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square"></a>
+    <a href="/LICENSE"><img alt="Software License" src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square"></a>
   </p>
 </p>
 
