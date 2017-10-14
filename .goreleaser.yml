@@ -1,0 +1,14 @@
+# .goreleaser.yml
+builds:
+  - main: cmd/chair/main.go
+    binary: chair
+    goos:
+      - linux
+    goarch:
+      - amd64
+archive:
+  format: tar.gz
+  replacements:
+    amd64: 64-bit
+  files:
+    - chair.bash
