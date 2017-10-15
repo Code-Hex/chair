@@ -1,7 +1,7 @@
 <p align="center">
   <img alt="logo" src="https://user-images.githubusercontent.com/6500104/31577054-c9f68064-b142-11e7-9e5a-e41046f330f7.png" height="140" />
   <h3 align="center">Chair</h3>
-  <p align="center">This chair help you when you play <a href="http://isucon.net/">isucon</a>.</p>
+  <p align="center">This chair helps you when you play <a href="http://isucon.net/">isucon</a>.</p>
   <p align="center">
     <a href="/LICENSE"><img alt="Software License" src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square"></a>
   </p>
@@ -31,7 +31,7 @@ Flags:
 
 ## SubCommands
 ### dump
-Dump mysql schema or data.
+`dump` command dumps mysql schema or data.
 ```
 Usage:
   chair dump [flags]
@@ -51,7 +51,7 @@ Flags:
 ```
 
 ### info
-Check information you are using machine.
+`info` command checks information you are using machine.
 ```
 Usage:
   chair info [flags]
@@ -76,7 +76,7 @@ Flags:
 ```
 
 ### show
-Show a part of configuration for mysql and nginx.
+`show` command shows a part of configuration for mysql and nginx.
 ```
 Usage:
   chair show [flags]
@@ -89,7 +89,7 @@ Examples:
 ```
 
 ### tldr
-Show tldr for some command to help you.
+`tldr` command shows tldr for some command to help you.
 ```
 Usage:
   chair tldr [flags]
