@@ -59,24 +59,21 @@ sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES`
 
 func NginxAccessLog() string {
 	return `http {
-	log_format ltsv 'domain:$host\t'
-		'host:$remote_addr\t'
-		'user:$remote_user\t'
-		'time:$time_local\t'
-		'method:$request_method\t'
-		'path:$request_uri\t'
-		'protocol:$server_protocol\t'
-		'status:$status\t'
-		'size:$body_bytes_sent\t'
-		'referer:$http_referer\t'
-		'agent:$http_user_agent\t'
-		'response_time:$request_time\t'
-		'cookie:$http_cookie\t'
-		'set_cookie:$sent_http_set_cookie\t'
-		'upstream_addr:$upstream_addr\t'
-		'upstream_cache_status:$upstream_cache_status\t'
-		'upstream_response_time:$upstream_response_time';
-
+  log_format ltsv "time:$time_local"
+        "\thost:$remote_addr"
+        "\tforwardedfor:$http_x_forwarded_for"
+        "\treq:$request"
+        "\tmethod:$request_method"
+        "\turi:$request_uri"
+        "\tstatus:$status"
+        "\tsize:$body_bytes_sent"
+        "\treferer:$http_referer"
+        "\tua:$http_user_agent"
+        "\treqtime:$request_time"
+        "\truntime:$upstream_http_x_runtime"
+        "\tapptime:$upstream_response_time"
+        "\tcache:$upstream_http_x_cache"
+        "\tvhost:$host";
 
 	access_log /var/log/nginx/access.log ltsv;
 }`
